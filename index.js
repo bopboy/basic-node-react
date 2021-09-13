@@ -1,11 +1,24 @@
 const express = require('express')
 const app = express()
 const port = 5000
+// const bodyParser = require('body-parser')
+const { User } = require('./models/User')
+const config = require('./config/key')
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://scp0000:mush0000@basic-node-react.8y7kp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected...')).catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send('Hello Nodejs'))
+app.get('/', (req, res) => res.send('Hello Nodejs & Hello World'))
+app.post('/register', (req, res) => {
+    const user = new User(req.body)
+    user.save((err, info) => {
+        if (err) return res.json({ succes: false, err })
+        return res.status(200).json({ success: true })
+    })
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}`))
