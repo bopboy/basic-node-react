@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../../_actions/user_action'
+import { withRouter } from 'react-router-dom'
 
 function LoginPage(props) {
     const dispatch = useDispatch()
@@ -13,7 +14,7 @@ function LoginPage(props) {
         const body = { email: Email, password: Password }
         dispatch(loginUser(body)).then(response => {
             if (response.payload.loginSuccess) {
-                console.log(response.payload)
+                // console.log(response.payload)
                 props.history.push('/')
             } else alert('Error')
         })
@@ -32,4 +33,4 @@ function LoginPage(props) {
     )
 }
 
-export default LoginPage
+export default withRouter(LoginPage)
